@@ -49,7 +49,7 @@ class JsonMiddleware extends Middleware {
         });
 
         // Generic error handler
-        $app->error(function (Exception $e) use ($app) {
+        $app->error(function (\Exception $e) use ($app) {
 
             $error_type = self::_errorType($e->getCode());
             $error_msg = $e->getMessage();
