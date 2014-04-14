@@ -1,4 +1,6 @@
 <?php
+namespace JsonApi;
+
 /**
  * jsonAPI - Slim extension to implement fast JSON API's
  *
@@ -11,6 +13,8 @@
  *
 */
 
+use \Slim\View;
+use \Slim\Slim;
 
 /**
  * JsonApiView - view wrapper for json responses (with error code).
@@ -21,7 +25,7 @@
  * @license GNU General Public License, version 3
  * @filesource
  */
-class JsonApiView extends \Slim\View {
+class JsonView extends View {
 
     /**
      * Bitmask consisting of <b>JSON_HEX_QUOT</b>,
@@ -40,7 +44,7 @@ class JsonApiView extends \Slim\View {
     public $encodingOptions = 0;
 
     public function render($status=200, $data = NULL) {
-        $app = \Slim\Slim::getInstance();
+        $app = Slim::getInstance();
 
         $status = intval($status);
 

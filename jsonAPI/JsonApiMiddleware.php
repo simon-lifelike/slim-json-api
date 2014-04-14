@@ -1,4 +1,6 @@
 <?php
+namespace JsonApi;
+
 /**
  * jsonAPI - Slim extension to implement fast JSON API's
  *
@@ -11,6 +13,9 @@
  *
 */
 
+use \Slim\Middleware;
+use \Slim\Slim;
+
 /**
  * JsonApiMiddleware - Middleware that sets a bunch of static routes for easy bootstrapping of json API's
  *
@@ -20,7 +25,7 @@
  * @license GNU General Public License, version 3
  * @filesource
  */
-class JsonApiMiddleware extends \Slim\Middleware {
+class JsonMiddleware extends Middleware {
 
 
     /**
@@ -29,7 +34,7 @@ class JsonApiMiddleware extends \Slim\Middleware {
      */
     function __construct(){
 
-        $app = \Slim\Slim::getInstance();
+        $app = Slim::getInstance();
         $app->config('debug', false);
 
         // Mirrors the API request
@@ -46,7 +51,7 @@ class JsonApiMiddleware extends \Slim\Middleware {
         // Generic error handler
         $app->error(function (Exception $e) use ($app) {
 
-            $error_type = \JsonApiMiddleware::_errorType($e->getCode());
+            $error_type = self::_errorType($e->getCode());
             $error_msg = $e->getMessage();
 
             $app->render(500, array(
