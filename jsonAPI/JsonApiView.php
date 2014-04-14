@@ -31,8 +31,8 @@ class JsonApiView extends \Slim\View {
         $response = $this->all();
 
         //append error bool
-        if (!$this->has('error')) {
-            $response['error'] = false;
+        if (!$this->has('success')) {
+            $response['success'] = 1;
         }
 
         //append status code
@@ -42,12 +42,12 @@ class JsonApiView extends \Slim\View {
 		if(isset($this->data->flash) && is_object($this->data->flash)){
 		    $flash = $this->data->flash->getMessages();
             if (count($flash)) {
-                $response['flash'] = $flash;   
+                $response['flash'] = $flash;
             } else {
                 unset($response['flash']);
             }
 		}
-		
+
         $app->response()->status($status);
         $app->response()->header('Content-Type', 'application/json');
 
