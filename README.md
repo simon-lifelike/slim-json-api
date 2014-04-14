@@ -27,8 +27,8 @@ Read more about Slim Here (https://github.com/codeguy/Slim#getting-started)
 
     $app = new \Slim\Slim();
 
-    $app->view(new \JsonApiView());
-    $app->add(new \JsonApiMiddleware());
+    $app->view(new \JsonApi\JsonView());
+    $app->add(new \JsonApi\JsonMiddleware());
 ```
 
 ###.htaccess sample
