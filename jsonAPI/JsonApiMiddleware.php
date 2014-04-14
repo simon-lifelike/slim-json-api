@@ -35,7 +35,7 @@ class JsonApiMiddleware extends \Slim\Middleware {
         // Mirrors the API request
         $app->get('/return', function() use ($app) {
 
-            $app->render(200,array(
+            $app->render(200, array(
                 'method'    => $app->request()->getMethod(),
                 'name'      => $app->request()->get('name'),
                 'headers'   => $app->request()->headers(),
@@ -46,33 +46,38 @@ class JsonApiMiddleware extends \Slim\Middleware {
         // Generic error handler
         $app->error(function (Exception $e) use ($app) {
 
+            $error_type = \JsonApiMiddleware::_errorType($e->getCode());
+            $error_msg = $e->getMessage();
 
-            $app->render(500,array(
-                'error' => true,
-                'msg'   => \JsonApiMiddleware::_errorType($e->getCode()) .": ". $e->getMessage(),
+            $app->render(500, array(
+                'sys_response' => 'Server Error',
+                'success'      => 0,
+                'error'        => "$error_type: $error_msg",
             ));
         });
 
         // Not found handler (invalid routes, invalid method types)
         $app->notFound(function() use ($app) {
-            $app->render(404,array(
-                'error' => TRUE,
-                'msg'   => 'Invalid route',
+            $app->render(404, array(
+                'sys_response' => 'Error',
+                'success'      => 0,
+                'error'        => 'Invalid route',
             ));
         });
 
         // Handle Empty response body
         $app->hook('slim.after.router', function () use ($app) {
+
             //Fix sugested by: https://github.com/bdpsoft
             //Will allow download request to flow
-            if($app->response()->header('Content-Type')==='application/octet-stream'){
-                return;
-            }
+            $content_type = $app->response()->header('Content-Type');
+            if($content_type == 'application/octet-stream') return;
 
             if (strlen($app->response()->body()) == 0) {
-                $app->render(500,array(
-                    'error' => TRUE,
-                    'msg'   => 'Empty response',
+                $app->render(500, array(
+                    'sys_response' => 'Error',
+                    'success'      => 0,
+                    'error'        => 'Empty response',
                 ));
             }
         });

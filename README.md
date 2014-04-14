@@ -11,8 +11,8 @@ Using composer you can add use this as your composer.json
 ```json
     {
         "require": {
-            "slim/slim": "2.3.*",
-            "entomb/slim-json-api": "dev-master"
+            "slim/slim": "2.*",
+            "entomb/slim-json-api": "2.*"
         }
     }
 
@@ -43,7 +43,7 @@ RewriteRule ^ index.php [QSA,L]
 all your requests will be returning a JSON output.
 the usage will be `$app->render( (int)$HTTP_CODE, (array)$DATA);`
 
-####example Code 
+####example Code
 ```php
 
     $app->get('/', function() use ($app) {
